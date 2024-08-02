@@ -3,26 +3,26 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
-    lazypath,
-  })
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable", -- latest stable release
+		lazypath,
+	})
 end
 
 vim.cmd("au BufRead,BufNewFile *.templ setfiletype templ")
-local autocmd = vim.api.nvim_create_autocmd
 
 vim.api.nvim_create_autocmd({ "BufEnter", "BufNewFile" }, {
-  pattern = { "*.templ" },
-  callback = function()
-    local buf = vim.api.nvim_get_current_buf()
-    vim.api.nvim_buf_set_option(buf, "filetype", "templ")
-  end,
+	pattern = { "*.templ" },
+	callback = function()
+		local buf = vim.api.nvim_get_current_buf()
+		vim.api.nvim_buf_set_option(buf, "filetype", "templ")
+	end,
 })
 
 vim.opt.rtp:prepend(lazypath)
@@ -34,10 +34,10 @@ vim.o.hlsearch = false
 vim.wo.number = true
 
 -- Tabs vs spaces
-vim.o.tabstop = 2      -- A TAB character looks like 4 spaces
+vim.o.tabstop = 2 -- A TAB character looks like 4 spaces
 vim.o.expandtab = true -- Pressing the TAB key will insert spaces instead of a TAB character
-vim.o.softtabstop = 2  -- Number of spaces inserted instead of a TAB character
-vim.o.shiftwidth = 2   -- Number of spaces inserted when indenting
+vim.o.softtabstop = 2 -- Number of spaces inserted instead of a TAB character
+vim.o.shiftwidth = 2 -- Number of spaces inserted when indenting
 
 -- Enable mouse mode
 vim.o.mouse = "a"
@@ -58,7 +58,7 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 
 -- Keep signcolumn on by default
-vim.wo.signcolumn = "yes"
+vim.wo.signcolumn = "no"
 
 -- Decrease update time
 vim.o.updatetime = 250
@@ -70,6 +70,11 @@ vim.o.completeopt = "menuone,noselect"
 -- Set terminal gui colors to true
 vim.o.termguicolors = true
 
+-- Fill Chars
+vim.opt.fillchars = { eob = " " }
+
+-- Mappings
+require("options.mappings")
 -- add binaries installed by mason.nvim to path
 local is_windows = vim.loop.os_uname().sysname == "Windows_NT"
 vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin" .. (is_windows and ";" or ":") .. vim.env.PATH

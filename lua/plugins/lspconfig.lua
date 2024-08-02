@@ -1,8 +1,43 @@
+local map = vim.keymap.set
+
 return {
 	{
 		"neovim/nvim-lspconfig",
 		lazy = false,
 		config = function()
+			map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", { noremap = true, silent = true })
+			map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", { noremap = true, silent = true })
+			map("n", "wa", "<cmd>lua vim.lsp.buf.add_workspace_folder<CR>", { noremap = true, silent = true })
+			map("n", "wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder<CR>", { noremap = true, silent = true })
+
+			vim.diagnostic.config({
+				signs = true,
+				underline = true,
+				virtual_text = false,
+				virtual_lines = false,
+				update_in_insert = true,
+				float = {
+					-- UI.
+					header = "true",
+					border = "rounded",
+					focusable = true,
+				},
+			})
+
+			vim.o.updatetime = 250
+			vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+				group = vim.api.nvim_create_augroup("float_diagnostic", { clear = true }),
+				callback = function()
+					vim.diagnostic.open_float(nil, { focus = false })
+				end,
+			})
+
+			local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = " " }
+			for type, icon in pairs(signs) do
+				local hl = "DiagnosticSign" .. type
+				vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+			end
+
 			local lspconfig = require("lspconfig")
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
@@ -19,7 +54,6 @@ return {
 			})
 
 			lspconfig.rust_analyzer.setup({})
-
 			lspconfig.gopls.setup({
 				filetypes = { "go", "gomod", "gowork", "gotmpl" },
 				settings = {
@@ -36,20 +70,6 @@ return {
 				settings = {
 					includeLanguages = {
 						templ = "html",
-					},
-				},
-			})
-
-			lspconfig.tsserver.setup({
-				capabilities = capabilities,
-				filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
-				settings = {
-					tsserver = {
-						complete = {
-							autoImports = true,
-							includeCompletionsForModuleExports = true,
-						},
-						importModuleSpecifierPreference = "relative",
 					},
 				},
 			})
