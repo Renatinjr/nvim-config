@@ -5,7 +5,7 @@
 -- Color table for highlights
 -- stylua: ignore
 local colors = {
-	bg       = '#202328',
+	bg       = '#20201e',
 	fg       = '#bbc2cf',
 	yellow   = '#ECBE7B',
 	cyan     = '#008080',
@@ -16,6 +16,7 @@ local colors = {
 	magenta  = '#c678dd',
 	blue     = '#51afef',
 	red      = '#ec5f67',
+	rose     = '#bd828d'
 }
 
 local conditions = {
@@ -81,7 +82,7 @@ ins_left({
 	function()
 		return "▊"
 	end,
-	color = { fg = colors.red },      -- Sets highlighting of component
+	color = { fg = colors.rose },     -- Sets highlighting of component
 	padding = { left = 0, right = 1 }, -- We don't need space before this
 })
 
@@ -128,7 +129,7 @@ ins_left({
 ins_left({
 	"filename",
 	cond = conditions.buffer_not_empty,
-	color = { fg = colors.magenta, gui = "bold" },
+	color = { fg = colors.rose, gui = "bold" },
 })
 
 ins_left({ "location" })
@@ -157,49 +158,54 @@ ins_left({
 ins_left({
 	-- Lsp server name .
 	function()
-		local msg = "No Active Lsp"
 		local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
 		local clients = vim.lsp.get_active_clients()
 		if next(clients) == nil then
-			return msg
+			return "No Active Lsp"
 		end
+
+		local active_clients = {}
 		for _, client in ipairs(clients) do
 			local filetypes = client.config.filetypes
 			if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-				return client.name
+				table.insert(active_clients, client.name)
 			end
 		end
-		return msg
-	end,
-	icon = " LSP:",
-	color = { fg = "#ffffff", gui = "bold" },
-})
 
+		if #active_clients == 0 then
+			return " No Active Lsp for " .. buf_ft
+		else
+			return "[ LSP ]"
+		end
+	end,
+	icon = string.gsub(" ", "%s+", ""),
+	color = { fg = colors.rose, gui = "bold" },
+})
 -- Add components to right sections
 ins_right({
 	"o:encoding",      -- option component same as &encoding in viml
 	fmt = string.upper, -- I'm not sure why it's upper case either ;)
 	cond = conditions.hide_in_width,
-	color = { fg = colors.red, gui = "bold" },
+	color = { fg = colors.rose, gui = "bold" },
 })
 
 ins_right({
 	"fileformat",
 	fmt = string.upper,
 	icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
-	color = { fg = colors.red, gui = "bold" },
+	color = { fg = colors.rose, gui = "bold" },
 })
 
 ins_right({
 	"branch",
 	icon = "",
-	color = { fg = colors.violet, gui = "bold" },
+	color = { fg = colors.rose, gui = "bold" },
 })
 
 ins_right({
 	"diff",
 	-- Is it me or the symbol for modified us really weird
-	symbols = { added = " ", modified = " ", removed = " " },
+	symbols = { added = " ", modified = " ", removed = " " },
 	diff_color = {
 		added = { fg = colors.green },
 		modified = { fg = colors.orange },
@@ -212,7 +218,7 @@ ins_right({
 	function()
 		return "▊"
 	end,
-	color = { fg = colors.red },
+	color = { fg = colors.rose },
 	padding = { left = 1 },
 })
 

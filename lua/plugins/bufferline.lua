@@ -9,6 +9,8 @@ return {
 		map("n", "b<RIGHT>", "<cmd> bnext <CR>", { noremap = true, silent = true })
 		map("n", "b<LEFT>", "<cmd> bprev <CR>", { noremap = true, silent = true })
 
-		require("bufferline").setup({})
+		require("bufferline").setup({
+			highlights = require("min-theme").bufferline.highlights,
+		})
 	end,
 }

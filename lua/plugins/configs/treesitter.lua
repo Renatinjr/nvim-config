@@ -1,10 +1,14 @@
 return {
 	ensure_installed = {
 		"go",
+		"css",
 		"lua",
 		"pkl",
 		"rust",
 		"gleam",
+		"vue",
+		"javascript",
+		"typescript",
 		"templ",
 	},
 	highlight = {

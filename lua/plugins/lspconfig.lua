@@ -1,5 +1,13 @@
 local map = vim.keymap.set
 
+local function organize_imports()
+	local params = {
+		command = "_typescript.organizeImports",
+		arguments = { vim.api.nvim_buf_get_name(0) },
+	}
+	vim.lsp.buf.execute_command(params)
+end
+
 return {
 	{
 		"neovim/nvim-lspconfig",
@@ -53,7 +61,21 @@ return {
 				},
 			})
 
-			lspconfig.rust_analyzer.setup({})
+			lspconfig.ts_ls.setup({
+				capabilities = capabilities,
+				init_options = {
+					preferences = {
+						disableSuggestions = true,
+					},
+				},
+				commands = {
+					OrganizeImports = {
+						organize_imports,
+						description = "Organize Imports",
+					},
+				},
+			})
+
 			lspconfig.gopls.setup({
 				filetypes = { "go", "gomod", "gowork", "gotmpl" },
 				settings = {
@@ -67,6 +89,16 @@ return {
 			})
 
 			lspconfig.tailwindcss.setup({
+				filetypes = {
+					"javascriptreact",
+					"vue",
+					"typescriptreact",
+					"astro",
+					"css",
+					"postcss",
+					"svelte",
+					"sass",
+				},
 				settings = {
 					includeLanguages = {
 						templ = "html",
@@ -75,6 +107,34 @@ return {
 			})
 
 			lspconfig.templ.setup({})
+			lspconfig.vuels.setup({
+				capabilities = capabilities,
+				settings = {
+					vetur = {
+						completion = {
+							autoImport = true,
+							useScaffoldSnippets = true,
+						},
+						format = {
+							defaultFormatter = {
+								html = "prettier",
+								js = "prettier",
+								ts = "prettier",
+							},
+						},
+						validation = {
+							template = true,
+							script = true,
+							style = true,
+							templateProps = true,
+							interpolation = true,
+						},
+						experimental = {
+							templateInterpolationService = true,
+						},
+					},
+				},
+			})
 		end,
 	},
 }

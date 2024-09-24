@@ -39,7 +39,7 @@ return {
 					signcolumn = "yes",
 					width = 30,
 					float = {
-						enable = true,
+						enable = false,
 						open_win_config = function()
 							local screen_w = vim.opt.columns:get()
 							local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()

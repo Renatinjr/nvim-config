@@ -3,8 +3,8 @@ local cmp = require("cmp")
 local cmp_ui = {
 	icons = true,
 	lspkind_text = true,
-	style = "atom_colored", -- default/flat_light/flat_dark/atom/atom_colored
-	border_color = "red", -- only applicable for "default" style, use color names from base30 variables
+	style = "atom_colored",      -- default/flat_light/flat_dark/atom/atom_colored
+	border_color = "red",        -- only applicable for "default" style, use color names from base30 variables
 	selected_item_bg = "colored", -- colored / simple
 }
 local cmp_style = cmp_ui.style
