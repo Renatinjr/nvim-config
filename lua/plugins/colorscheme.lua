@@ -12,10 +12,10 @@ return {
 		name = "catppuccin",
 		config = function()
 			require("catppuccin").setup({
-				flavour = "auto", -- latte, frappe, macchiato, mocha
-				background = { -- :h background
+				flavour = "frappe", -- latte, frappe, macchiato, mocha
+				background = {  -- :h background
 					light = "latte",
-					dark = "mocha",
+					dark = "mocchiato",
 				},
 				transparent_background = true, -- disables setting the background color.
 				show_end_of_buffer = false, -- shows the '~' characters after the end of buffers
@@ -86,8 +86,9 @@ return {
 				bold_vert_split = false,
 				dim_nc_background = false,
 				disable_background = false,
-				disable_float_background = false,
+				disable_float_background = true,
 				disable_italics = false,
+				transparent = true,
 
 				--- @usage string hex value or named color from rosepinetheme.com/palette
 				groups = {
@@ -199,15 +200,23 @@ return {
 				},
 				overrides = function(colors) -- add/modify highlights
 					return {
+						NvimTreeFolderArrowClosed = { fg = "#64748b" },
+						NvimTreeFolderIcon = { fg = "#64748b" },
+						NvimTreeFolderArrowOpen = { fg = "#83a3aa" },
+						ursorLine = { bg = colors.bg_light0 },
+						BufferLineIndicatorSelected = { fg = colors.warning, bg = colors.error },
+						BufferLineFill = { fg = colors.springGreen, bg = colors.springGreen },
 					}
 				end,
-				theme = "auto", -- Load "wave" theme when 'background' option is not set
+				theme = "wave", -- Load "wave" theme when 'background' option is not set
 				background = { -- map the value of 'background' option to a theme
-					dark = "dragon", -- try "dragon" !
+					dark = "wave", -- try "dragon" !
 					light = "lotus"
 				},
 			})
 			vim.cmd("colorscheme kanagawa")
 		end
-	}
+	},
+
+
 }
