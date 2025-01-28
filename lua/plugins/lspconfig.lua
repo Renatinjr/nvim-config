@@ -1,6 +1,5 @@
 local map = vim.keymap.set
 
-
 return {
 	{
 		"neovim/nvim-lspconfig",

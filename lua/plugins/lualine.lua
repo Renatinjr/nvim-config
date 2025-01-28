@@ -82,7 +82,7 @@ ins_left({
 	function()
 		return "▊"
 	end,
-	color = { fg = colors.rose },     -- Sets highlighting of component
+	color = { fg = colors.rose }, -- Sets highlighting of component
 	padding = { left = 0, right = 1 }, -- We don't need space before this
 })
 
@@ -158,8 +158,8 @@ ins_left({
 ins_left({
 	-- Lsp server name .
 	function()
-		local msg = 'No Active Lsp'
-		local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
+		local msg = "No Active Lsp"
+		local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
 		local clients = vim.lsp.get_active_clients()
 		if next(clients) == nil then
 			return msg
@@ -177,7 +177,7 @@ ins_left({
 })
 -- Add components to right sections
 ins_right({
-	"o:encoding",      -- option component same as &encoding in viml
+	"o:encoding", -- option component same as &encoding in viml
 	fmt = string.upper, -- I'm not sure why it's upper case either ;)
 	cond = conditions.hide_in_width,
 	color = { fg = colors.rose, gui = "bold" },
@@ -216,14 +216,16 @@ ins_right({
 	padding = { left = 1 },
 })
 
-return {
-	{
-		"nvim-lualine/lualine.nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		event = "VeryLazy",
-		config = function()
-			local lualine = require("lualine")
-			lualine.setup(config)
-		end,
-	},
-}
+return {}
+
+-- return {
+-- 	{
+-- 		"nvim-lualine/lualine.nvim",
+-- 		dependencies = { "nvim-tree/nvim-web-devicons" },
+-- 		event = "VeryLazy",
+-- 		config = function()
+-- 			local lualine = require("lualine")
+-- 			lualine.setup(config)
+-- 		end,
+-- 	},
+-- }

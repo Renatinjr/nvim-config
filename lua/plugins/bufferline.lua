@@ -1,15 +1,17 @@
 return {
 	"akinsho/bufferline.nvim",
 	version = "*",
-	dependencies = 'echasnovski/mini.nvim',
+	dependencies = "echasnovski/mini.nvim",
 	config = function()
 		local map = vim.keymap.set
 		map("n", "<leader>x", "<cmd>bd<CR>", { desc = "close buffer" })
 		map("n", "b<RIGHT>", "<cmd> bnext <CR>", { noremap = true, silent = true })
 		map("n", "b<LEFT>", "<cmd> bprev <CR>", { noremap = true, silent = true })
 
-		require("bufferline").setup {
-			highlights = require("catppuccin.groups.integrations.bufferline").get(),
+		require("bufferline").setup({
+			highlights = require("catppuccin.groups.integrations.bufferline").get({
+				styles = { "italic", "bold" },
+			}),
 			options = {
 				close_command = "bp|sp|bn|bd! %d",
 				right_mouse_command = "bp|sp|bn|bd! %d",
@@ -36,14 +38,16 @@ return {
 				diagnostics = false,
 				themable = true,
 			},
-		}
+		})
 		local cache = {}
 		local last_tab = 0
 
 		local utils = {}
 
 		utils.is_valid = function(buf_num)
-			if not buf_num or buf_num < 1 then return false end
+			if not buf_num or buf_num < 1 then
+				return false
+			end
 			local exists = vim.api.nvim_buf_is_valid(buf_num)
 			return vim.bo[buf_num].buflisted and exists
 		end
@@ -52,7 +56,9 @@ return {
 			local buf_nums = vim.api.nvim_list_bufs()
 			local ids = {}
 			for _, buf in ipairs(buf_nums) do
-				if utils.is_valid(buf) then ids[#ids + 1] = buf end
+				if utils.is_valid(buf) then
+					ids[#ids + 1] = buf
+				end
 			end
 			return ids
 		end
@@ -81,7 +87,15 @@ return {
 				last_tab = tab
 			end,
 		})
-		autocmd("TabClosed", { callback = function() cache[last_tab] = nil end })
-		autocmd("TabNewEntered", { callback = function() vim.api.nvim_buf_set_option(0, "buflisted", true) end })
+		autocmd("TabClosed", {
+			callback = function()
+				cache[last_tab] = nil
+			end,
+		})
+		autocmd("TabNewEntered", {
+			callback = function()
+				vim.api.nvim_buf_set_option(0, "buflisted", true)
+			end,
+		})
 	end,
 }
